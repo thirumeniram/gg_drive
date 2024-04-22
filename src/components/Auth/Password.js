@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../contextApi/Auth";
 import { Link } from "react-router-dom";
+import CenteredContainer from "./Container";
 
 export default function ForgotPassword() {
   const emailRef = useRef();
@@ -28,6 +29,7 @@ export default function ForgotPassword() {
   }
 
   return (
+    <CenteredContainer>
     <div className="max-w-md mx-auto mt-8 p-4 bg-white rounded-lg shadow-lg">
       <h2 className="text-center mb-4 text-xl font-semibold">Password Reset</h2>
       {error && <div className="text-red-500">{error}</div>}
@@ -58,5 +60,6 @@ export default function ForgotPassword() {
         Need an account? <Link to="/signup" className="text-blue-500">Sign Up</Link>
       </div>
     </div>
+    </CenteredContainer>
   );
 }

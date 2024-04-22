@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../contextApi/Auth";
 import { Link,useNavigate } from "react-router-dom";
+import CenteredContainer from "./Container";
 
 export default function UpdateProfile() {
   const emailRef = useRef();
@@ -11,7 +12,7 @@ export default function UpdateProfile() {
   const { currentUser, updatePassword, updateEmail } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -32,7 +33,7 @@ export default function UpdateProfile() {
 
     Promise.all(promises)
       .then(() => {
-        history.push("/");
+        navigate("/user");
       })
       .catch(() => {
         setError("Failed to update account");
@@ -43,6 +44,7 @@ export default function UpdateProfile() {
   }
 
   return (
+    <CenteredContainer>
     <div className="max-w-md mx-auto mt-8 p-4 bg-white rounded-lg shadow-lg">
       <h2 className="text-center mb-4 text-xl font-semibold">Update Profile</h2>
       {error && <div className="text-red-500">{error}</div>}
@@ -87,8 +89,9 @@ export default function UpdateProfile() {
         </button>
       </form>
       <div className="text-center mt-2">
-        <Link to="/" className="text-blue-500">Cancel</Link>
+        <Link to="/user" className="text-blue-500">Cancel</Link>
       </div>
     </div>
+    </CenteredContainer>
   );
 }

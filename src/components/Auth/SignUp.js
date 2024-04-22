@@ -2,6 +2,7 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../contextApi/Auth";
 import { Link,useNavigate } from "react-router-dom";
+import CenteredContainer from "./Container";
 
 
 export default function Signup() {
@@ -35,6 +36,7 @@ export default function Signup() {
   
 
   return (
+    <CenteredContainer>
     <div className="max-w-md mx-auto mt-8 p-4 bg-white rounded-lg shadow-lg">
       <h2 className="text-center mb-4 text-xl font-semibold">Sign Up</h2>
       {error && <div className="text-red-500">{error}</div>}
@@ -81,5 +83,6 @@ export default function Signup() {
         Already have an account? <Link to="/login" className="text-blue-500">Log In</Link>
       </div>
     </div>
+    </CenteredContainer>
   );
 }
