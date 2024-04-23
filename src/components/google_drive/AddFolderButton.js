@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
-// import { database } from "../../firebase";
-// import { useAuth } from "../../contextApi/Auth";
-// import { ROOT_FOLDER } from "../../Hook/useFolder";
+ import { database } from "../../firebase";
+ import { addDoc } from "firebase/firestore";
+ import { useAuth } from "../../contextApi/Auth";
+import { ROOT_FOLDER } from "../../Hook/useFolder";
 
-//currentFolder
-export default function AddFolderButton({  }) {
+// currentFolder
+export default function AddFolderButton(currentFolder) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-//   const { currentUser } = useAuth();
+  const { currentUser } = useAuth();
 
   function openModal() {
     setOpen(true);
@@ -20,27 +21,39 @@ export default function AddFolderButton({  }) {
     setOpen(false);
   }
 
-   function handleSubmit(e) {
-   }
-//     e.preventDefault();
+  
+  function handleSubmit(e) {
+    e.preventDefault();
 
-//     if (currentFolder == null) return;
+    if(currentFolder===null)
+    return;
+  
+    if (name.trim() === '') {
+      // Handle empty folder name error
+      return;
+    }
+  
+    addDoc(database.folders, {
+      name: name,
+      // Other fields you want to add to the document
+      // For example: parentId, userId, path, createdAt
+      
+      random:currentFolder,
+      parentId: currentFolder.name+currentFolder.id,
+      userId: currentUser.uid,
+      // path: path,
+      createdAt: database.getCurrentTimestamp(),
+    }).then(() => {
+      console.log('Folder added successfully');
+      setName('');
+      closeModal();
+    }).catch(error => {
+      console.error('Error adding folder: ', error);
+      // Handle error adding folder
+    });
+  }
 
-//     const path = [...currentFolder.path];
-//     if (currentFolder !== ROOT_FOLDER) {
-//       path.push({ name: currentFolder.name, id: currentFolder.id });
-//     }
 
-//     database.folders.add({
-//       name: name,
-//       parentId: currentFolder.id,
-//       userId: currentUser.uid,
-//       path: path,
-//       createdAt: database.getCurrentTimestamp(),
-//     });
-//     setName("");
-//     closeModal();
-//   }
 
   return (
     <>

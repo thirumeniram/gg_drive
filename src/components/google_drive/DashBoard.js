@@ -5,13 +5,15 @@ import AddFileButton from "./AddFileButton";
 import Folder from "./Folder";
 import File from "./File";
 import Navbar from "./Navbar";
-import FolderBreadcrumbs from "./FolderBreadcrumbs";
+// import FolderBreadcrumbs from "./FolderBreadcrumbs";
 import { useParams, useLocation } from "react-router-dom";
 
 export default function Dashboard() {
-//   const { folderId } = useParams();
-//   const { state = {} } = useLocation();
-//   const { folder, childFolders, childFiles } = useFolder(folderId, state.folder);
+  const { folderId } = useParams();
+  // const { state = {} } = useLocation();
+  const state=useFolder();
+  const  {folder}= useFolder();
+   console.log(state)
 
   return (
     <>
@@ -20,9 +22,11 @@ export default function Dashboard() {
       <div className="container mx-auto">
         <div className="flex items-center">
           {/* {/* <FolderBreadcrumbs currentFolder={folder} /> */}
-          {/* <AddFileButton currentFolder={folder} /> 
-          currentFolder={folder}*/}
-          <AddFolderButton  /> 
+          {/* <AddFileButton currentFolder={folder}
+            currentFolder={folder}
+           /> 
+          */}
+          <AddFolderButton currentFolder={folder}  /> 
           Content
         </div>
         {/* {childFolders.length > 0 && (

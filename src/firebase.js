@@ -141,6 +141,8 @@
 // export { app, auth, firestore, storage };
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore, collection } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // Initialize the Firebase app
 const app = initializeApp({
@@ -154,4 +156,18 @@ const app = initializeApp({
 
 // Access the auth functionality correctly using getAuth()
 export const auth = getAuth(app);
+const firestore = getFirestore(app);
+
+// Access Storage using getStorage()
+const storage = getStorage(app);
+
+// Define the database object
+export const database = {
+  folders: collection(firestore, "folders"),
+  files: collection(firestore, "files"),
+  formatDoc: doc => {
+    return { id: doc.id, ...doc.data() }
+  },
+  getCurrentTimestamp: () => new Date().toISOString(),
+}
 export default app;
