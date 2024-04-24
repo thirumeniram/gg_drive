@@ -1,6 +1,8 @@
 import { useReducer, useEffect } from "react"
 import { useAuth } from "../contextApi/Auth"
-import { database } from "../firebase"
+import { database} from "../firebase" 
+import { doc, getDoc } from "firebase/firestore"; 
+
 
 const ACTIONS = {
   SELECT_FOLDER: "select-folder",
@@ -61,22 +63,49 @@ export function useFolder(folderId = null, folder = null) {
       })
     }
 
-    // database.folders
-    //   .doc(folderId)
-    //   .get()
-    //   .then(doc => {
-    //     dispatch({
-    //       type: ACTIONS.UPDATE_FOLDER,
-    //       payload: { folder: database.formatDoc(doc) },
-    //     })
-    //   })
-    //   .catch(() => {
-    //     dispatch({
-    //       type: ACTIONS.UPDATE_FOLDER,
-    //       payload: { folder: ROOT_FOLDER },
-    //     })
-    //   })
-  }, [folderId])
+  //   database.folders
+  //     .doc(folderId)
+  //     .get()
+  //     .then(doc => {
+  //       // dispatch({
+  //       //   type: ACTIONS.UPDATE_FOLDER,
+  //       //   payload: { folder: database.formatDoc(doc) },
+  //       // })
+  //       console.log(doc);
+  //     })
+  //     .catch(() => {
+  //       dispatch({
+  //         type: ACTIONS.UPDATE_FOLDER,
+  //         payload: { folder: ROOT_FOLDER },
+  //       })
+  //     })
+  // }, [folderId])
+  const docRef = doc(database.folders, folderId); // Get the document reference
+  getDoc(docRef)
+      .then((docSnap) => {
+          if (docSnap.exists()) {
+              console.log("Document data:", docSnap.data());
+              // Assuming formatDoc correctly formats the Firestore document
+              dispatch({
+                  type: ACTIONS.UPDATE_FOLDER,
+                  payload: { folder: database.formatDoc(docSnap) },
+              });
+          } else {
+              console.log("No such document!");
+              dispatch({
+                  type: ACTIONS.UPDATE_FOLDER,
+                  payload: { folder: ROOT_FOLDER },
+              });
+          }
+      })
+      .catch((error) => {
+          console.error("Error getting document:", error);
+          dispatch({
+              type: ACTIONS.UPDATE_FOLDER,
+              payload: { folder: ROOT_FOLDER },
+          });
+      });
+}, [folderId]);
 
 //   useEffect(() => {
 //     return database.folders

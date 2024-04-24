@@ -12,7 +12,7 @@ export default function Dashboard() {
   const { folderId } = useParams();
   // const { state = {} } = useLocation();
   const state=useFolder();
-  const  {folder}= useFolder();
+  const  {folder}= useFolder("W6lq4iR1GmOnRaX7StBr");
    console.log(state)
 
   return (
