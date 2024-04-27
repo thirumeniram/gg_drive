@@ -17,9 +17,10 @@ function App() {
             <Routes>
               
               <Route path="/" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
-             
-              
-              {/* {Profile} */}
+              <Route path="/folder/:folderId" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
+               {/* <PrivateRoute exact path="/folder/:folderId" component={Dashboard} />
+              //  */}
+               {/* {Profile} */}
 
               <Route path="/user" element={<PrivateRoute><Profile/></PrivateRoute>} />
               <Route path="/update-profile" element={<PrivateRoute><UpdateProfile /></PrivateRoute>} />

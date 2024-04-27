@@ -159,7 +159,7 @@ export const auth = getAuth(app);
 const firestore = getFirestore(app);
 
 // Access Storage using getStorage()
-const storage = getStorage(app);
+export const storage = getStorage(app);
 
 // Define the database object
 export const database = {

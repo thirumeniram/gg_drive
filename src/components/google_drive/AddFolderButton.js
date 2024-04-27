@@ -8,7 +8,7 @@ import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import { ROOT_FOLDER } from "../../Hook/useFolder";
 
 // currentFolder
-export default function AddFolderButton(currentFolder) {
+export default function AddFolderButton({currentFolder}) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const { currentUser } = useAuth();
@@ -25,23 +25,41 @@ export default function AddFolderButton(currentFolder) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    // console.log("current folder",currentFolder)
+    console.log("Attempting to add folder, current folder:", currentFolder);
+
+  if (name.trim() === '') {
+    console.error('Folder name is required');
+    return;
+  }
+
+  // Ensure currentFolder is not null or use ROOT_FOLDER as a fallback
+  const parentId = currentFolder ? currentFolder.id : ROOT_FOLDER.id;
+
+  console.log(`Adding new folder with name: ${name}, parentId: ${parentId}`);
+
+
     if(currentFolder===null)
     return;
   
-    if (name.trim() === '') {
-      // Handle empty folder name error
-      return;
-    }
+    const path = currentFolder && currentFolder.path ? [...currentFolder.path] : [];
+
+  if (currentFolder !== ROOT_FOLDER) {
+    path.push({ name: currentFolder.name, id: currentFolder.id });
+  }
+
+   
   
     addDoc(database.folders, {
       name: name,
       // Other fields you want to add to the document
       // For example: parentId, userId, path, createdAt
+    
       
-      random:currentFolder,
-      parentId: currentFolder.name+currentFolder.id,
+    
+      parentId: currentFolder ? currentFolder.id : ROOT_FOLDER.id,
       userId: currentUser.uid,
-      // path: path,
+      path: path,
       createdAt: database.getCurrentTimestamp(),
     }).then(() => {
       console.log('Folder added successfully');
@@ -58,7 +76,7 @@ export default function AddFolderButton(currentFolder) {
   return (
     <>
      
-     <div className="inline-flex items-center justify-center border border-green-700  w-8 h-8 ">
+     <div className="inline-flex items-center justify-center border border-green-700  w-8 h-8  ">
   <Button
     onClick={openModal}
     className="inline-flex items-center py-2 px-2 ml-10 rounded-lg text-green-500  "
